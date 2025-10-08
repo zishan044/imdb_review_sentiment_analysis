@@ -3,5 +3,8 @@ jupyterlab>=3.0
 notebook
 kedro~=1.0.0
 kedro-datasets[pandas-csv]>=3.0.1
+numpy
 pandas>=2.2.3
-lxml>=5.3.0
+matplotlib
+seaborn
+nltk
