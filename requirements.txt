@@ -3,6 +3,8 @@ jupyterlab>=3.0
 notebook
 kedro~=1.0.0
 kedro-datasets[pandas-csv]>=3.0.1
+kedro-datasets[pandas-parquet]>=3.0.1
+pyarrow
 numpy
 pandas>=2.2.3
 matplotlib
