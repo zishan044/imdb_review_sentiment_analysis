@@ -1,4 +1,4 @@
-from kedro.pipeline import Node, Pipeline  # noqa
+from kedro.pipeline import Node, Pipeline
 from .nodes import extract_data_from_files
 
 def create_pipeline(**kwargs) -> Pipeline:
