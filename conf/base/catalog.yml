@@ -5,3 +5,15 @@ raw_data:
 clean_data:
   type: pandas.ParquetDataset
   filepath: data/02_intermediate/clean_data.pq
+
+bag_of_words_features:
+  type: pickle.PickleDataset
+  filepath: data/03_primary/bag_of_words_features.pkl
+
+tfidf_features:
+  type: pickle.PickleDataset
+  filepath: data/03_primary/tfidf_features.pkl
+
+word2vec_features:
+  type: pickle.PickleDataset
+  filepath: data/03_primary/word2vec_features.pkl
