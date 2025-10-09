@@ -17,3 +17,11 @@ tfidf_features:
 word2vec_features:
   type: pickle.PickleDataset
   filepath: data/03_primary/word2vec_features.pkl
+
+logistic_regression_model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/logistic_regression.pkl
+
+logistic_regression_metrics:
+  type: json.JSONDataset
+  filepath: data/07_model_output/logistic_regression_metrics.json
