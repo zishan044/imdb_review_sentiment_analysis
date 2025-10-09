@@ -4,7 +4,6 @@ from nltk import sent_tokenize, word_tokenize, pos_tag
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
 
-# Download only once
 nltk.download('punkt', quiet=True)
 nltk.download('averaged_perceptron_tagger_eng', quiet=True)
 nltk.download('wordnet', quiet=True)
@@ -46,15 +45,10 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     
     df_process = df.copy()
 
-    df_process['clean_review'] = clean_text(df_process['review'])
-
-    df_process['sentences'] = df_process['clean_review'].apply(sent_tokenize)
-    df_process['words'] = df_process['clean_review'].apply(word_tokenize)
-
-    df_process['lemmatized_review'] = df_process['clean_review'].apply(lemmatize_text)
-
+    df_process['review'] = clean_text(df_process['review'])
+    df_process['lemmatized_text'] = df_process['review'].apply(lemmatize_text)
     df_process['pos_senti'] = (df_process['sentiment'] == 'positive').astype(int)
 
-    df_process = df_process.drop(columns=['id', 'sentiment', 'review'])
+    df_process = df_process[['lemmatized_text', 'pos_senti']]
 
     return df_process

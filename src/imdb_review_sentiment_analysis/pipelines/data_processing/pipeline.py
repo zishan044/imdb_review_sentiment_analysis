@@ -3,5 +3,5 @@ from .nodes import preprocess_data
 
 def create_pipeline(**kwargs) -> Pipeline:
     return Pipeline([
-        Node(func=preprocess_data, inputs='raw_data', outputs='feature_data', name='preprocess_data_node'),
+        Node(func=preprocess_data, inputs='raw_data', outputs='clean_data', name='preprocess_data_node'),
     ])

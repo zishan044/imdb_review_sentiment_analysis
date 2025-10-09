@@ -2,6 +2,6 @@ raw_data:
   type: pandas.CSVDataset
   filepath: data/01_raw/raw_data.csv
 
-feature_data:
+clean_data:
   type: pandas.ParquetDataset
-  filepath: data/02_intermediate/feature_data.pq
+  filepath: data/02_intermediate/clean_data.pq
