@@ -1,11 +1,31 @@
 import pandas as pd
 import nltk
-from nltk import sent_tokenize, word_tokenize, WordNetLemmatizer
+from nltk import sent_tokenize, word_tokenize, pos_tag
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet
 
+# Download only once
 nltk.download('punkt', quiet=True)
+nltk.download('averaged_perceptron_tagger_eng', quiet=True)
 nltk.download('wordnet', quiet=True)
 
+lemmatizer = WordNetLemmatizer()
+
+def get_wordnet_pos(tag: str) -> str:
+
+    if tag.startswith('J'):
+        return wordnet.ADJ
+    elif tag.startswith('V'):
+        return wordnet.VERB
+    elif tag.startswith('N'):
+        return wordnet.NOUN
+    elif tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return wordnet.NOUN
+
 def clean_text(x: pd.Series) -> pd.Series:
+
     return (
         x.str.lower()
          .str.replace(r'<.*?>', ' ', regex=True)
@@ -15,19 +35,26 @@ def clean_text(x: pd.Series) -> pd.Series:
          .str.strip()
     )
 
-def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
+def lemmatize_text(text: str) -> str:
 
+    tokens = word_tokenize(text)
+    pos_tags = pos_tag(tokens)
+    lemmas = [lemmatizer.lemmatize(w, get_wordnet_pos(t)) for w, t in pos_tags]
+    return " ".join(lemmas)
+
+def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
+    
     df_process = df.copy()
 
-    df_process['review'] = clean_text(df_process['review'])
+    df_process['clean_review'] = clean_text(df_process['review'])
 
-    df_process['sentences'] = df_process['review'].apply(sent_tokenize)
-    df_process['words'] = df_process['review'].apply(word_tokenize)
+    df_process['sentences'] = df_process['clean_review'].apply(sent_tokenize)
+    df_process['words'] = df_process['clean_review'].apply(word_tokenize)
 
-    lemmatizer = WordNetLemmatizer()
-    df_process['lemmas'] = df_process['words'].apply(lambda tokens: [lemmatizer.lemmatize(t) for t in tokens])
-    
-    df_process['pos_senti'] = df_process['sentiment'] == 'positive'
-    
-    df_process = df_process.drop(columns=['id', 'sentiment'])
+    df_process['lemmatized_review'] = df_process['clean_review'].apply(lemmatize_text)
+
+    df_process['pos_senti'] = (df_process['sentiment'] == 'positive').astype(int)
+
+    df_process = df_process.drop(columns=['id', 'sentiment', 'review'])
+
     return df_process
